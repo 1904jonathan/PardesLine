@@ -42,7 +42,7 @@ Outputs (meshes and point clouds) are saved in `C:\PardesLineData` by default.
 
 ## Video Tutorial
 
-Step-by-step explanation of the repo: [YouTube Video](https://youtu.be/7PPFEOXewZE)
+Step-by-step explanation of the repo: [YouTube Video](https://www.youtube.com/@PardesLine26)
 
 ---
 
