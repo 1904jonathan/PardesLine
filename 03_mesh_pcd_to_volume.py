@@ -24,12 +24,16 @@ o3d.visualization.draw_geometries([mesh], window_name="Normalized Mesh")
 # 2. Compute axis-aligned bounding box (AABB)
 # ----------------------
 aabb = mesh.get_axis_aligned_bounding_box()
-# oobb = mesh.get_oriented_bounding_box()
+oobb = mesh.get_oriented_bounding_box()
 aabb.color = (1, 0, 0)  # red
+oobb.color = (0, 1, 0)  # green
+
 min_b = aabb.get_min_bound()
 max_b = aabb.get_max_bound()
 
 o3d.visualization.draw_geometries([mesh, aabb], window_name="Mesh + AABB")
+o3d.visualization.draw_geometries([mesh, aabb, oobb], window_name="Mesh + AABB + OOBB")
+
 
 # ----------------------
 # 3. Voxelize the mesh
