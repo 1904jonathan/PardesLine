@@ -1,3 +1,6 @@
 open3d
 numpy
 scipy
+scikit-image
+matplotlib
+loguru
