@@ -1,7 +1,3 @@
-Got it! Here’s a concise, polished README tailored to your repo structure:
-
----
-
 # PardesLine – 3D Mesh & Point Cloud Processing 🐇
 
 PardesLine is a Python repository demonstrating **essential 3D mesh and point cloud workflows** using [Open3D](http://www.open3d.org/). Perfect for learning and experimenting with 3D data in **computer vision, robotics, VR/AR, and machine learning**.
@@ -54,12 +50,4 @@ Step-by-step explanation of the repo: [YouTube Video](https://www.youtube.com/@P
 * VR/AR asset preparation
 * Machine learning on point clouds
 
----
 
-## License
-
-MIT License – see [LICENSE](LICENSE)
-
----
-
-If you want, I can make an **even snappier version under 150 words** that’s GitHub-ready and looks visually engaging with emojis and badges. Do you want me to do that?
