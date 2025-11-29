@@ -16,6 +16,8 @@ PardesLine is a Python repository demonstrating **essential 3D mesh and point cl
 
 - **`04_SDF.py`** – Advanced pipeline for Signed Distance Field (SDF) computation and mesh reconstruction. Computes SDFs from meshes, creates shell representations, applies morphological operations (erosion), and reconstructs meshes from SDF volumes. Uses a configurable pipeline with logging.
 
+- **`05_surface_reconstruction.py`** – Surface reconstruction pipeline demonstrating multiple algorithms: Convex Hull computation, Alpha Shapes with varying alpha values, Ball Pivoting Algorithm (BPA), and Poisson Surface Reconstruction with density-based filtering. Includes normal estimation and orientation techniques.
+
 ### Helper Modules
 
 - **`functions.py`** – Utility functions for point cloud operations (NumPy array to Open3D PointCloud conversion) and binary volume visualization.
@@ -30,6 +32,14 @@ PardesLine is a Python repository demonstrating **essential 3D mesh and point cl
   - Mesh reconstruction
   - Visualization utilities
   - `PipelineConfig` dataclass for configuration management
+
+- **`functions_for_surfaceR.py`** – Surface reconstruction utilities with:
+  - Point cloud loading (bunny, eagle datasets)
+  - Convex Hull computation
+  - Alpha Shape reconstruction with TetraMesh optimization
+  - Ball Pivoting Algorithm (BPA) reconstruction
+  - Poisson Surface Reconstruction with density visualization and filtering
+  - Normal estimation and consistent orientation
 
 ---
 
@@ -61,6 +71,7 @@ python 01_pointcloud_processing.py
 python 02_mesh_processing.py
 python 03_mesh_pcd_to_volume.py
 python 04_SDF.py
+python 05_surface_reconstruction.py
 ```
 
 **Output Directory:** Processed meshes and point clouds are saved in `C:\PardesLineData` by default.
@@ -80,6 +91,8 @@ Input: Mesh (e.g., Stanford Bunny)
   ↓
 [04_SDF] → SDF Computation & Mesh Reconstruction
   ↓
+[05_surface_reconstruction] → Surface Reconstruction (Convex Hull, Alpha Shapes, BPA, Poisson)
+  ↓
 Output: Processed models + visualizations
 ```
 
@@ -93,6 +106,7 @@ Output: Processed models + visualizations
 - VR/AR asset preparation
 - Machine learning on point clouds (PointNet, etc.)
 - Signed distance fields for neural implicit representations (NeRF, DeepSDF)
+- Surface reconstruction from point cloud scans
 
 ---
 
@@ -100,8 +114,10 @@ Output: Processed models + visualizations
 
 ✓ Full pipeline from mesh to volumetric representations  
 ✓ SDF computation and mesh reconstruction  
+✓ Surface reconstruction (Convex Hull, Alpha Shapes, BPA, Poisson)  
 ✓ Voxelization with configurable resolution  
 ✓ Binary morphological operations (erosion)  
+✓ Normal estimation and orientation  
 ✓ Interactive 3D visualization using Open3D  
 ✓ Comprehensive logging with Loguru  
 ✓ Modular, extensible design  
