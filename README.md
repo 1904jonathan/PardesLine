@@ -18,6 +18,8 @@ PardesLine is a Python repository demonstrating **essential 3D mesh and point cl
 
 - **`05_surface_reconstruction.py`** – Surface reconstruction pipeline demonstrating multiple algorithms: Convex Hull computation, Alpha Shapes with varying alpha values, Ball Pivoting Algorithm (BPA), and Poisson Surface Reconstruction with density-based filtering. Includes normal estimation and orientation techniques.
 
+- **`06_point_cloud_registration.py`** – Complete point cloud registration pipeline using RANSAC and ICP algorithms. Demonstrates mesh-to-point cloud conversion with uniform sampling, geometric transformations (rotation + translation), FPFH feature extraction, global registration with RANSAC, and local refinement with ICP. Includes comprehensive error analysis and transformation matrix recovery with yellow/cyan visualization.
+
 ### Helper Modules
 
 - **`functions.py`** – Utility functions for point cloud operations (NumPy array to Open3D PointCloud conversion) and binary volume visualization.
@@ -40,6 +42,27 @@ PardesLine is a Python repository demonstrating **essential 3D mesh and point cl
   - Ball Pivoting Algorithm (BPA) reconstruction
   - Poisson Surface Reconstruction with density visualization and filtering
   - Normal estimation and consistent orientation
+
+- **`functions_for_registration.py`** – Point cloud registration utilities with:
+  - Bunny mesh loading from Open3D datasets
+  - Mesh-to-point cloud uniform sampling
+  - Geometric transformations (rotation + translation)
+  - FPFH feature computation for registration
+  - RANSAC global registration with feature matching
+  - ICP local refinement (point-to-point)
+  - Transformation error analysis (rotation, translation)
+  - Visualization utilities with custom point sizes
+  - `RegistrationConfig` dataclass for parameter management
+
+### Mathematical Demonstrations
+
+- **`mathDemo/convex_hull_2d_demo.py`** – Educational 2D convex hull computation using Graham Scan algorithm. Demonstrates:
+  - Anchor point selection (lowest y-coordinate)
+  - Polar angle sorting with `atan2`
+  - Cross product for turn detection (CCW/CW)
+  - Stack-based hull construction
+  - Step-by-step visualization with matplotlib
+  - Mathematical formulas and explanations
 
 ---
 
@@ -72,6 +95,8 @@ python 02_mesh_processing.py
 python 03_mesh_pcd_to_volume.py
 python 04_SDF.py
 python 05_surface_reconstruction.py
+python 06_point_cloud_registration.py
+python mathDemo/convex_hull_2d_demo.py
 ```
 
 **Output Directory:** Processed meshes and point clouds are saved in `C:\PardesLineData` by default.
@@ -93,7 +118,12 @@ Input: Mesh (e.g., Stanford Bunny)
   ↓
 [05_surface_reconstruction] → Surface Reconstruction (Convex Hull, Alpha Shapes, BPA, Poisson)
   ↓
+[06_point_cloud_registration] → RANSAC + ICP Registration & Alignment
+  ↓
 Output: Processed models + visualizations
+
+Math Demonstrations:
+[mathDemo/convex_hull_2d_demo] → 2D Convex Hull (Graham Scan)
 ```
 
 ---
@@ -101,26 +131,33 @@ Output: Processed models + visualizations
 ## Applications
 
 - 3D scanning & reconstruction
-- Robotics perception & SLAM
-- Medical imaging & surgical navigation
-- VR/AR asset preparation
+- Robotics perception & SLAM (point cloud registration for localization)
+- Medical imaging & surgical navigation (registration of pre-op/intra-op scans)
+- VR/AR asset preparation and alignment
 - Machine learning on point clouds (PointNet, etc.)
 - Signed distance fields for neural implicit representations (NeRF, DeepSDF)
 - Surface reconstruction from point cloud scans
+- Multi-view 3D reconstruction (camera pose estimation with RANSAC)
+- Object tracking and 6DOF pose estimation
+- Educational demonstrations of computational geometry algorithms
 
 ---
 
 ## Key Features
 
-✓ Full pipeline from mesh to volumetric representations  
-✓ SDF computation and mesh reconstruction  
-✓ Surface reconstruction (Convex Hull, Alpha Shapes, BPA, Poisson)  
-✓ Voxelization with configurable resolution  
-✓ Binary morphological operations (erosion)  
-✓ Normal estimation and orientation  
-✓ Interactive 3D visualization using Open3D  
-✓ Comprehensive logging with Loguru  
-✓ Modular, extensible design  
+✓ Full pipeline from mesh to volumetric representations
+✓ SDF computation and mesh reconstruction
+✓ Surface reconstruction (Convex Hull, Alpha Shapes, BPA, Poisson)
+✓ Point cloud registration with RANSAC and ICP algorithms
+✓ FPFH feature-based matching for robust alignment
+✓ Geometric transformations (rotation, translation, scaling)
+✓ Voxelization with configurable resolution
+✓ Binary morphological operations (erosion)
+✓ Normal estimation and orientation
+✓ Interactive 3D visualization using Open3D
+✓ Comprehensive logging with Loguru
+✓ Modular, extensible design with dataclass configurations
+✓ Educational mathematical demonstrations (Graham Scan, cross products, polar angles)
 
 
 ## Author
