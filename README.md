@@ -20,6 +20,8 @@ PardesLine is a Python repository demonstrating **essential 3D mesh and point cl
 
 - **`06_point_cloud_registration.py`** – Complete point cloud registration pipeline using RANSAC and ICP algorithms. Demonstrates mesh-to-point cloud conversion with uniform sampling, geometric transformations (rotation + translation), FPFH feature extraction, global registration with RANSAC, and local refinement with ICP. Includes comprehensive error analysis and transformation matrix recovery with yellow/cyan visualization.
 
+- **`07_deformable_registration.py`** – Deformable point cloud registration pipeline combining Gaussian process deformation with Coherent Point Drift (CPD) algorithm. Applies synthetic Gaussian deformation using random control points and kernel interpolation, then uses CPD to recover the deformation field. Includes comprehensive metrics (deformation magnitudes, registration error, field accuracy) and multi-stage visualization with blue/green/red color coding.
+
 ### Helper Modules
 
 - **`functions.py`** – Utility functions for point cloud operations (NumPy array to Open3D PointCloud conversion) and binary volume visualization.
@@ -53,6 +55,14 @@ PardesLine is a Python repository demonstrating **essential 3D mesh and point cl
   - Transformation error analysis (rotation, translation)
   - Visualization utilities with custom point sizes
   - `RegistrationConfig` dataclass for parameter management
+
+- **`functions_for_deformation.py`** – Deformable registration utilities with:
+  - Point cloud normalization and centering
+  - Gaussian kernel computation for deformation interpolation
+  - Gaussian process deformation with control points
+  - Comprehensive deformation metrics (magnitude, error, field difference)
+  - Colored point cloud creation and visualization
+  - `DeformationConfig` dataclass for pipeline configuration
 
 ### Mathematical Demonstrations
 
@@ -96,6 +106,7 @@ python 03_mesh_pcd_to_volume.py
 python 04_SDF.py
 python 05_surface_reconstruction.py
 python 06_point_cloud_registration.py
+python 07_deformable_registration.py
 python mathDemo/convex_hull_2d_demo.py
 ```
 
@@ -120,6 +131,8 @@ Input: Mesh (e.g., Stanford Bunny)
   ↓
 [06_point_cloud_registration] → RANSAC + ICP Registration & Alignment
   ↓
+[07_deformable_registration] → Gaussian Deformation + CPD Registration
+  ↓
 Output: Processed models + visualizations
 
 Math Demonstrations:
@@ -133,12 +146,14 @@ Math Demonstrations:
 - 3D scanning & reconstruction
 - Robotics perception & SLAM (point cloud registration for localization)
 - Medical imaging & surgical navigation (registration of pre-op/intra-op scans)
+- Deformable medical image registration (organ deformation tracking)
 - VR/AR asset preparation and alignment
 - Machine learning on point clouds (PointNet, etc.)
 - Signed distance fields for neural implicit representations (NeRF, DeepSDF)
 - Surface reconstruction from point cloud scans
 - Multi-view 3D reconstruction (camera pose estimation with RANSAC)
 - Object tracking and 6DOF pose estimation
+- Non-rigid shape matching and deformation analysis
 - Educational demonstrations of computational geometry algorithms
 
 ---
@@ -148,8 +163,10 @@ Math Demonstrations:
 ✓ Full pipeline from mesh to volumetric representations
 ✓ SDF computation and mesh reconstruction
 ✓ Surface reconstruction (Convex Hull, Alpha Shapes, BPA, Poisson)
-✓ Point cloud registration with RANSAC and ICP algorithms
+✓ Rigid registration with RANSAC and ICP algorithms
+✓ Deformable registration with Gaussian deformation and CPD
 ✓ FPFH feature-based matching for robust alignment
+✓ Gaussian kernel-based deformation interpolation
 ✓ Geometric transformations (rotation, translation, scaling)
 ✓ Voxelization with configurable resolution
 ✓ Binary morphological operations (erosion)
