@@ -11,6 +11,7 @@ This module provides utilities for:
 import numpy as np
 import open3d as o3d
 from scipy.spatial.distance import cdist
+from scipy.spatial import cKDTree
 from dataclasses import dataclass
 from typing import Tuple
 from loguru import logger
@@ -28,19 +29,28 @@ class DeformationConfig:
     point_size: float = 2.0
 
 
-def load_bunny_source(filepath: str = r'C:\CODE\pycpd\data\bunny_source.txt') -> np.ndarray:
+def load_bunny_source(target_points: int = 1500) -> np.ndarray:
     """
-    Load bunny point cloud from file.
+    Load bunny point cloud from Open3D and downsample it.
 
     Args:
-        filepath: Path to bunny source file
+        target_points: Target number of points after downsampling (minimum)
 
     Returns:
         Point cloud as numpy array of shape (N, 3)
     """
-    logger.info(f"Loading bunny point cloud from: {filepath}")
-    points = np.loadtxt(filepath)
-    logger.info(f"Loaded {len(points)} points")
+    logger.info("Loading bunny point cloud from Open3D dataset")
+
+    # Load bunny from Open3D
+    bunny_mesh = o3d.data.BunnyMesh()
+    mesh = o3d.io.read_triangle_mesh(bunny_mesh.path)
+
+    # Sample points from mesh
+    pcd = mesh.sample_points_poisson_disk(number_of_points=target_points)
+    logger.info(f"Sampled {len(pcd.points)} points from bunny mesh")
+
+    points = np.asarray(pcd.points)
+
     return points
 
 
@@ -131,6 +141,79 @@ def compute_face_normal_at_center(points: np.ndarray) -> np.ndarray:
     return normal
 
 
+def nonRigidPressureDeformation(
+    points: np.ndarray,
+    center_point: np.ndarray,
+    radius: float = 0.05,
+    direction: np.ndarray = np.array([1.0, 0.0, 0.0]),
+    max_displacement: float = 0.02
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Apply a smooth, non-rigid pressure deformation to a point cloud.
+
+    Parameters:
+    - points: (N, 3) ndarray of 3D points
+    - center_point: (3,) array, center of the pressure
+    - radius: float, radius of influence (in same units as point cloud)
+    - direction: (3,) array, direction of the pressure (will be normalized)
+    - max_displacement: float, maximum displacement at the center
+
+    Returns:
+        Tuple of (deformed_points, deformation_field, control_points, displacements)
+    """
+    logger.info("Applying non-rigid pressure deformation with Gaussian falloff")
+
+    # Normalize direction
+    direction = direction / np.linalg.norm(direction)
+
+    logger.info(f"Pressure center: [{center_point[0]:.4f}, {center_point[1]:.4f}, {center_point[2]:.4f}]")
+    logger.info(f"Pressure direction: [{direction[0]:.3f}, {direction[1]:.3f}, {direction[2]:.3f}]")
+    logger.info(f"Radius of influence: {radius:.4f}")
+    logger.info(f"Max displacement at center: {max_displacement:.4f}")
+
+    # Initialize deformation field
+    deformation_field = np.zeros_like(points)
+
+    # Build spatial index
+    tree = cKDTree(points)
+    affected_indices = tree.query_ball_point(center_point, r=radius)
+
+    if len(affected_indices) == 0:
+        logger.warning("No points within radius of influence!")
+        return points.copy(), deformation_field, center_point.reshape(1, 3), (direction * max_displacement).reshape(1, 3)
+
+    logger.info(f"Affecting {len(affected_indices)} points within radius")
+
+    affected_points = points[affected_indices]
+
+    # Compute radial distances from center
+    distances = np.linalg.norm(affected_points - center_point, axis=1)
+
+    # Gaussian falloff deformation (smooth and non-rigid)
+    sigma = radius / 2.0
+    weights = np.exp(- (distances**2) / (2 * sigma**2))  # (M,)
+    displacements = (weights[:, np.newaxis]) * max_displacement * direction  # (M, 3)
+
+    # Apply deformation to affected points
+    for i, idx in enumerate(affected_indices):
+        deformation_field[idx] = displacements[i]
+
+    # Apply deformation
+    deformed_points = points + deformation_field
+
+    mean_magnitude = np.mean(np.linalg.norm(deformation_field, axis=1))
+    max_magnitude = np.max(np.linalg.norm(deformation_field, axis=1))
+    logger.info(f"Pressure deformation applied:")
+    logger.info(f"  Mean magnitude: {mean_magnitude:.6f}")
+    logger.info(f"  Max magnitude: {max_magnitude:.6f}")
+
+    # Return in same format as previous function
+    control_points = center_point.reshape(1, 3)
+    displacement_vector = (direction * max_displacement).reshape(1, 3)
+
+    return deformed_points, deformation_field, control_points, displacement_vector
+
+
 def apply_gaussian_deformation(
     points: np.ndarray,
     n_control: int,
@@ -138,20 +221,22 @@ def apply_gaussian_deformation(
     beta: float
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
-    Apply Gaussian process deformation to point cloud.
-    Creates a localized "spike" deformation from left to right (X direction),
-    centered at the middle height (Y center) of the bunny, with Gaussian propagation.
+    Apply non-rigid pressure deformation to point cloud.
+    Creates a localized pressure deformation from left to right (X direction),
+    centered at the middle height (Y center) of the bunny.
+
+    This is a wrapper for nonRigidPressureDeformation to maintain API compatibility.
 
     Args:
         points: Input point cloud (N, 3)
-        n_control: Number of control points (used for intensity control)
-        displacement_scale: Scale of the spike displacement
-        beta: Gaussian kernel bandwidth for propagation
+        n_control: Not used (kept for API compatibility)
+        displacement_scale: Maximum displacement at pressure center
+        beta: Radius of influence for pressure deformation
 
     Returns:
         Tuple of (deformed_points, deformation_field, control_points, displacements)
     """
-    logger.info("Applying Gaussian spike deformation from left to right at Y-center")
+    logger.info("Applying pressure deformation from left to right at Y-center")
 
     # Find the center of the point cloud
     center = np.mean(points, axis=0)
@@ -161,39 +246,23 @@ def apply_gaussian_deformation(
     z_center = center[2]
     x_left = np.min(points[:, 0])
 
-    # Create control point at left side, middle height
-    control_point = np.array([x_left, y_center, z_center])
-    control_points = control_point.reshape(1, 3)
-
-    logger.info(f"Control point at left side: [{control_point[0]:.4f}, {control_point[1]:.4f}, {control_point[2]:.4f}]")
+    # Create pressure center point at left side, middle height
+    center_point = np.array([x_left, y_center, z_center])
 
     # Direction: left to right (positive X direction)
     direction = np.array([1.0, 0.0, 0.0])
 
-    # Scale displacement by displacement_scale and n_control (intensity factor)
-    spike_intensity = displacement_scale * np.sqrt(n_control)
-    displacements = (direction * spike_intensity).reshape(1, 3)
+    # Use beta as radius, displacement_scale as max displacement
+    radius = beta
+    max_displacement = displacement_scale
 
-    logger.info(f"Spike displacement magnitude: {spike_intensity:.6f}")
-    logger.info(f"Spike direction: Left to Right (X-axis) [1.0, 0.0, 0.0]")
-
-    # Compute Gaussian kernel for propagation
-    K = gaussian_kernel(points, control_points, beta=beta)
-    logger.debug(f"Computed Gaussian kernel with beta={beta} for propagation")
-
-    # Interpolate deformation to full point cloud using Gaussian falloff
-    deformation_field = K @ displacements
-
-    # Apply deformation
-    deformed_points = points + deformation_field
-
-    mean_magnitude = np.mean(np.linalg.norm(deformation_field, axis=1))
-    max_magnitude = np.max(np.linalg.norm(deformation_field, axis=1))
-    logger.info(f"Gaussian spike deformation applied:")
-    logger.info(f"  Mean magnitude: {mean_magnitude:.6f}")
-    logger.info(f"  Max magnitude: {max_magnitude:.6f}")
-
-    return deformed_points, deformation_field, control_points, displacements
+    return nonRigidPressureDeformation(
+        points=points,
+        center_point=center_point,
+        radius=radius,
+        direction=direction,
+        max_displacement=max_displacement
+    )
 
 
 def compute_deformation_metrics(

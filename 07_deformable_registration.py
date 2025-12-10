@@ -1,12 +1,12 @@
 """
-Deformable Point Cloud Registration using Gaussian Spike Deformation and CPD.
+Deformable Point Cloud Registration using Non-Rigid Pressure Deformation and CPD.
 
 This script demonstrates a complete pipeline for:
-1. Loading the bunny point cloud
-2. Applying a localized spike deformation at the center along a face normal
-3. Using Gaussian propagation to create smooth deformation falloff
+1. Loading the bunny point cloud from Open3D dataset
+2. Downsampling to ~1500 points using voxel downsampling
+3. Applying a localized non-rigid pressure deformation with Gaussian falloff
 4. Computing deformation field using Coherent Point Drift (CPD)
-5. Visualizing original, spike-deformed, and CPD-registered point clouds
+5. Visualizing original, pressure-deformed, and CPD-registered point clouds
 6. Computing and displaying comprehensive deformation metrics
 
 All parameters are logged using loguru and visualizations are displayed at each step.
@@ -34,7 +34,7 @@ def main():
     Main pipeline for deformable point cloud registration using Gaussian deformation and CPD.
     """
     logger.info("=" * 80)
-    logger.info("DEFORMABLE POINT CLOUD REGISTRATION - SPIKE DEFORMATION + CPD")
+    logger.info("DEFORMABLE POINT CLOUD REGISTRATION - PRESSURE DEFORMATION + CPD")
     logger.info("=" * 80)
 
     # ============================================================================
@@ -43,19 +43,18 @@ def main():
     logger.info("\n=== Step 1: Pipeline Configuration ===")
 
     config = DeformationConfig(
-        n_control_points=25,
-        displacement_scale=0.005,
-        gaussian_beta=0.05,
-        cpd_beta=19.0,
+        n_control_points=1,
+        displacement_scale=0.004,
+        gaussian_beta=0.03,
+        cpd_beta=50.0,
         cpd_lambda=0.005,
-        cpd_max_iterations=200,
+        cpd_max_iterations=10000,
         point_size=2.0
     )
 
     logger.info(f"Configuration loaded:")
-    logger.info(f"  Spike intensity factor: {config.n_control_points}")
-    logger.info(f"  Displacement scale: {config.displacement_scale}")
-    logger.info(f"  Gaussian propagation beta: {config.gaussian_beta}")
+    logger.info(f"  Max displacement: {config.displacement_scale}")
+    logger.info(f"  Pressure radius: {config.gaussian_beta}")
     logger.info(f"  CPD beta (smoothness): {config.cpd_beta}")
     logger.info(f"  CPD lambda (regularization): {config.cpd_lambda}")
     logger.info(f"  CPD max iterations: {config.cpd_max_iterations}")
@@ -78,9 +77,9 @@ def main():
     visualize_geometries([pcd_source_vis], "Step 2: Original Bunny (Blue)", config.point_size)
 
     # ============================================================================
-    # Step 3: Apply Spike Deformation with Gaussian Propagation
+    # Step 3: Apply Non-Rigid Pressure Deformation
     # ============================================================================
-    logger.info("\n=== Step 3: Applying Spike Deformation with Gaussian Propagation ===")
+    logger.info("\n=== Step 3: Applying Non-Rigid Pressure Deformation ===")
 
     bunny_target, gaussian_deformation, control_points, displacements = apply_gaussian_deformation(
         bunny_normalized,
@@ -89,7 +88,7 @@ def main():
         config.gaussian_beta
     )
 
-    logger.info(f"Spike deformation applied at center with Gaussian propagation")
+    logger.info(f"Pressure deformation applied with Gaussian falloff")
     logger.info(f"Mean deformation magnitude: {np.mean(np.linalg.norm(gaussian_deformation, axis=1)):.6f}")
     logger.info(f"Max deformation magnitude: {np.max(np.linalg.norm(gaussian_deformation, axis=1)):.6f}")
 
@@ -100,7 +99,7 @@ def main():
     logger.info("Target point cloud painted in green [0, 1, 0]")
     visualize_geometries(
         [pcd_source_centered, pcd_target_centered],
-        "Step 3: Original (Blue) vs Spike Deformed (Green)",
+        "Step 3: Original (Blue) vs Pressure Deformed (Green)",
         config.point_size
     )
 
@@ -137,7 +136,7 @@ def main():
         gaussian_deformation
     )
 
-    logger.info("--- Spike Deformation Metrics ---")
+    logger.info("--- Pressure Deformation Metrics ---")
     logger.info(f"  Mean magnitude: {metrics['gaussian_mean_magnitude']:.6f}")
 
     logger.info("\n--- CPD Deformation Metrics ---")
@@ -145,7 +144,7 @@ def main():
     logger.info(f"  Max magnitude: {metrics['cpd_max_magnitude']:.6f}")
 
     logger.info("\n--- Registration Quality ---")
-    logger.info(f"  Registration error (CPD to Spike target): {metrics['registration_error']:.6f}")
+    logger.info(f"  Registration error (CPD to Pressure target): {metrics['registration_error']:.6f}")
     logger.info(f"  Deformation field difference: {metrics['deformation_field_difference']:.6f}")
 
     # ============================================================================
@@ -155,11 +154,11 @@ def main():
 
     pcd_cpd_centered = create_colored_point_cloud(center_points(bunny_cpd_deformed), [1, 0, 0])
 
-    # Visualization 1: Original vs Spike target
-    logger.info("Visualization 1: Original (blue) vs Spike target (green)")
+    # Visualization 1: Original vs Pressure target
+    logger.info("Visualization 1: Original (blue) vs Pressure target (green)")
     visualize_geometries(
         [pcd_source_centered, pcd_target_centered],
-        "Step 6.1: Original (Blue) vs Spike Deformed (Green)",
+        "Step 6.1: Original (Blue) vs Pressure Deformed (Green)",
         config.point_size
     )
 
@@ -171,11 +170,11 @@ def main():
         config.point_size
     )
 
-    # Visualization 3: Spike target vs CPD deformed
-    logger.info("Visualization 3: Spike target (green) vs CPD deformed (red)")
+    # Visualization 3: Pressure target vs CPD deformed
+    logger.info("Visualization 3: Pressure target (green) vs CPD deformed (red)")
     visualize_geometries(
         [pcd_target_centered, pcd_cpd_centered],
-        "Step 6.3: Spike Target (Green) vs CPD Deformed (Red)",
+        "Step 6.3: Pressure Target (Green) vs CPD Deformed (Red)",
         config.point_size
     )
 
@@ -183,7 +182,7 @@ def main():
     logger.info("Visualization 4: All three point clouds together")
     visualize_geometries(
         [pcd_source_centered, pcd_target_centered, pcd_cpd_centered],
-        "Step 6.4: All - Original (Blue), Spike (Green), CPD (Red)",
+        "Step 6.4: All - Original (Blue), Pressure (Green), CPD (Red)",
         config.point_size
     )
 
@@ -202,7 +201,7 @@ def main():
     logger.info(f"CPD lambda: {config.cpd_lambda}")
 
     logger.info("\n--- Deformation Summary ---")
-    logger.info(f"Spike mean magnitude: {metrics['gaussian_mean_magnitude']:.6f}")
+    logger.info(f"Pressure mean magnitude: {metrics['gaussian_mean_magnitude']:.6f}")
     logger.info(f"CPD mean magnitude: {metrics['cpd_mean_magnitude']:.6f}")
     logger.info(f"CPD max magnitude: {metrics['cpd_max_magnitude']:.6f}")
 
