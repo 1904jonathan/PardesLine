@@ -216,7 +216,6 @@ def nonRigidPressureDeformation(
 
 def apply_gaussian_deformation(
     points: np.ndarray,
-    n_control: int,
     displacement_scale: float,
     beta: float
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:

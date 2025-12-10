@@ -43,7 +43,6 @@ def main():
     logger.info("\n=== Step 1: Pipeline Configuration ===")
 
     config = DeformationConfig(
-        n_control_points=1,
         displacement_scale=0.004,
         gaussian_beta=0.03,
         cpd_beta=50.0,
@@ -83,7 +82,6 @@ def main():
 
     bunny_target, gaussian_deformation, control_points, displacements = apply_gaussian_deformation(
         bunny_normalized,
-        config.n_control_points,
         config.displacement_scale,
         config.gaussian_beta
     )
