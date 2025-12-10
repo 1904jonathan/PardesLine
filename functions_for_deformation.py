@@ -93,6 +93,44 @@ def gaussian_kernel(x: np.ndarray, y: np.ndarray, beta: float = 2.0) -> np.ndarr
     return np.exp(-pairwise_dists / (2 * beta ** 2))
 
 
+def compute_face_normal_at_center(points: np.ndarray) -> np.ndarray:
+    """
+    Compute a representative face normal near the center of the point cloud.
+
+    Args:
+        points: Input point cloud (N, 3)
+
+    Returns:
+        Normal vector (3,) pointing outward from a face near center
+    """
+    # Find center of point cloud
+    center = np.mean(points, axis=0)
+
+    # Find points near the center
+    distances_to_center = np.linalg.norm(points - center, axis=1)
+    near_center_threshold = np.percentile(distances_to_center, 30)
+    near_center_mask = distances_to_center < near_center_threshold
+    near_center_points = points[near_center_mask]
+
+    logger.debug(f"Found {len(near_center_points)} points near center for normal estimation")
+
+    # Use PCA to find the local surface orientation
+    centered = near_center_points - np.mean(near_center_points, axis=0)
+    cov_matrix = np.cov(centered.T)
+    _, eigenvectors = np.linalg.eigh(cov_matrix)
+
+    # The eigenvector with smallest eigenvalue is the normal direction
+    normal = eigenvectors[:, 0]
+
+    # Ensure normal points outward (away from centroid of all points)
+    if np.dot(normal, center - np.mean(near_center_points, axis=0)) < 0:
+        normal = -normal
+
+    logger.info(f"Computed face normal: [{normal[0]:.3f}, {normal[1]:.3f}, {normal[2]:.3f}]")
+
+    return normal
+
+
 def apply_gaussian_deformation(
     points: np.ndarray,
     n_control: int,
@@ -101,39 +139,59 @@ def apply_gaussian_deformation(
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Apply Gaussian process deformation to point cloud.
+    Creates a localized "spike" deformation from left to right (X direction),
+    centered at the middle height (Y center) of the bunny, with Gaussian propagation.
 
     Args:
         points: Input point cloud (N, 3)
-        n_control: Number of control points
-        displacement_scale: Scale of random displacements
-        beta: Gaussian kernel bandwidth
+        n_control: Number of control points (used for intensity control)
+        displacement_scale: Scale of the spike displacement
+        beta: Gaussian kernel bandwidth for propagation
 
     Returns:
         Tuple of (deformed_points, deformation_field, control_points, displacements)
     """
-    logger.info("Applying Gaussian deformation")
+    logger.info("Applying Gaussian spike deformation from left to right at Y-center")
 
-    # Pick control points randomly
-    idx = np.random.choice(len(points), n_control, replace=False)
-    control_points = points[idx]
-    logger.debug(f"Selected {n_control} control points")
+    # Find the center of the point cloud
+    center = np.mean(points, axis=0)
 
-    # Generate random displacements for control points
-    displacements = displacement_scale * np.random.randn(n_control, 3)
-    logger.debug(f"Generated random displacements with scale {displacement_scale}")
+    # Find the Y (vertical) center, but use left side for X (min X)
+    y_center = center[1]
+    z_center = center[2]
+    x_left = np.min(points[:, 0])
 
-    # Compute Gaussian kernel
+    # Create control point at left side, middle height
+    control_point = np.array([x_left, y_center, z_center])
+    control_points = control_point.reshape(1, 3)
+
+    logger.info(f"Control point at left side: [{control_point[0]:.4f}, {control_point[1]:.4f}, {control_point[2]:.4f}]")
+
+    # Direction: left to right (positive X direction)
+    direction = np.array([1.0, 0.0, 0.0])
+
+    # Scale displacement by displacement_scale and n_control (intensity factor)
+    spike_intensity = displacement_scale * np.sqrt(n_control)
+    displacements = (direction * spike_intensity).reshape(1, 3)
+
+    logger.info(f"Spike displacement magnitude: {spike_intensity:.6f}")
+    logger.info(f"Spike direction: Left to Right (X-axis) [1.0, 0.0, 0.0]")
+
+    # Compute Gaussian kernel for propagation
     K = gaussian_kernel(points, control_points, beta=beta)
-    logger.debug(f"Computed Gaussian kernel with beta={beta}")
+    logger.debug(f"Computed Gaussian kernel with beta={beta} for propagation")
 
-    # Interpolate deformation to full point cloud
+    # Interpolate deformation to full point cloud using Gaussian falloff
     deformation_field = K @ displacements
 
     # Apply deformation
     deformed_points = points + deformation_field
 
     mean_magnitude = np.mean(np.linalg.norm(deformation_field, axis=1))
-    logger.info(f"Gaussian deformation applied - Mean magnitude: {mean_magnitude:.6f}")
+    max_magnitude = np.max(np.linalg.norm(deformation_field, axis=1))
+    logger.info(f"Gaussian spike deformation applied:")
+    logger.info(f"  Mean magnitude: {mean_magnitude:.6f}")
+    logger.info(f"  Max magnitude: {max_magnitude:.6f}")
 
     return deformed_points, deformation_field, control_points, displacements
 
