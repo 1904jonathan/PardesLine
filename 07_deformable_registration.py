@@ -43,9 +43,9 @@ def main():
     logger.info("\n=== Step 1: Pipeline Configuration ===")
 
     config = DeformationConfig(
-        displacement_scale=0.004,
-        gaussian_beta=0.03,
-        cpd_beta=50.0,
+        displacement_scale=0.4,
+        gaussian_beta=0.5,
+        cpd_beta=40.0,
         cpd_lambda=0.005,
         cpd_max_iterations=10000,
         point_size=2.0
