@@ -106,6 +106,34 @@ def main():
     Y2[:, :-1] = fish_source
     Y = np.vstack((Y1, Y2))
 
+    # Step 0: Visualize original 2D fish data with Matplotlib
+    print("=" * 60)
+    print("STEP 0: Visualizing original 2D fish data (Matplotlib)")
+    print("=" * 60)
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 6))
+
+    # Plot source fish
+    ax1.scatter(fish_source[:, 0], fish_source[:, 1], color='blue', s=20, alpha=0.6)
+    ax1.set_title('Source Fish (2D)', fontsize=14, fontweight='bold')
+    ax1.set_xlabel('X')
+    ax1.set_ylabel('Y')
+    ax1.grid(True, alpha=0.3)
+    ax1.set_aspect('equal', adjustable='box')
+
+    # Plot target fish
+    ax2.scatter(fish_target[:, 0], fish_target[:, 1], color='red', s=20, alpha=0.6)
+    ax2.set_title('Target Fish (2D)', fontsize=14, fontweight='bold')
+    ax2.set_xlabel('X')
+    ax2.set_ylabel('Y')
+    ax2.grid(True, alpha=0.3)
+    ax2.set_aspect('equal', adjustable='box')
+
+    plt.tight_layout()
+    print(f"Target fish points: {fish_target.shape[0]}")
+    print(f"Source fish points: {fish_source.shape[0]}")
+    print("\nClose the matplotlib window to continue...")
+    plt.show()
+
     # Step 1: Visualize BEFORE registration with Open3D
     print("=" * 60)
     print("STEP 1: Visualizing BEFORE registration (Open3D)")
