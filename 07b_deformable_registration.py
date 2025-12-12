@@ -118,7 +118,9 @@ def main():
 
     logger.info("Starting CPD registration...")
     reg.register()
-    bunny_cpd_deformed = reg.TY
+    # bunny_cpd_deformed = reg.TY
+    bunny_cpd_deformed = reg.transform_point_cloud(bunny_normalized)
+
 
     logger.info("CPD registration completed successfully")
 
@@ -160,13 +162,6 @@ def main():
         config.point_size
     )
 
-    # Visualization 2: Original vs CPD deformed
-    logger.info("Visualization 2: Original (blue) vs CPD deformed (red)")
-    visualize_geometries(
-        [pcd_source_centered, pcd_cpd_centered],
-        "Step 6.2: Original (Blue) vs CPD Deformed (Red)",
-        config.point_size
-    )
 
     # Visualization 3: Pressure target vs CPD deformed
     logger.info("Visualization 3: Pressure target (green) vs CPD deformed (red)")
