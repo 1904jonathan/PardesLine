@@ -147,26 +147,16 @@ python 08_point_cloud_segmentation.py
 
 ## 🎯 Learning Path
 
-```mermaid
-graph TD
-    A[📺 Introduction Video] --> B[01: Point Cloud Basics]
-    B --> C[02: Mesh Operations]
-    C --> D[03: Volumetric Conversion]
-    D --> E[04: SDF Computation]
-    E --> F[05: Surface Reconstruction]
-    F --> G[06: Registration RANSAC+ICP]
-    G --> H[07: Deformable Registration]
-    H --> I[08: Deep Learning Segmentation]
+Follow the tutorials in sequence for a complete learning experience:
 
-    style A fill:#ff6b6b
-    style B fill:#4ecdc4
-    style C fill:#45b7d1
-    style D fill:#96ceb4
-    style E fill:#ffeaa7
-    style F fill:#dfe6e9
-    style G fill:#a29bfe
-    style H fill:#fd79a8
-    style I fill:#fdcb6e
+```
+📺 Introduction
+    ↓
+01: Point Cloud Basics → 02: Mesh Operations → 03: Volumetric Conversion
+    ↓
+04: SDF Computation → 05: Surface Reconstruction
+    ↓
+06: Registration (RANSAC + ICP) → 07: Deformable Registration → 08: Deep Learning Segmentation
 ```
 
 ---
@@ -242,18 +232,6 @@ graph TD
 </td>
 </tr>
 </table>
-
----
-
-## 🧮 Bonus: Mathematical Demonstrations
-
-Dive deeper into the mathematics behind 3D algorithms:
-
-- **[`mathDemo/convex_hull_2d_demo.py`](mathDemo/convex_hull_2d_demo.py)** – Graham Scan algorithm with step-by-step visualization
-  - Anchor point selection
-  - Polar angle sorting with `atan2`
-  - Cross product for turn detection
-  - Stack-based hull construction
 
 ---
 
