@@ -5,3 +5,4 @@ scikit-image
 matplotlib
 loguru
 pycpd
+openvino

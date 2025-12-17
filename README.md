@@ -1,103 +1,134 @@
-# PardesLine – 3D Computer Vision
+# 🎯 PardesLine – 3D Computer Vision Tutorials
 
-PardesLine is a Python repository demonstrating **essential 3D mesh and point cloud workflows** using [Open3D](http://www.open3d.org/). Perfect for learning and experimenting with 3D data in **computer vision, robotics, VR/AR, and machine learning**.
+<div align="center">
 
----
+[![YouTube Channel](https://img.shields.io/badge/YouTube-PardesLine26-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/@PardesLine26)
+[![Open3D](https://img.shields.io/badge/Open3D-Powered-blue?style=for-the-badge)](http://www.open3d.org/)
+[![Python](https://img.shields.io/badge/Python-3.8+-green?style=for-the-badge&logo=python)](https://www.python.org/)
 
-## Modules Overview
+**Professional tutorials on 3D mesh and point cloud workflows for Computer Vision, Robotics, VR/AR, and Machine Learning**
 
-### Core Scripts
+[📺 Watch Introduction](https://youtu.be/nEOeiYpRc0E?si=59lrWlMWuV5mUj0b) | [🔗 GitHub Repository](https://github.com/1904jonathan/PardesLine)
 
-- **`01_pointcloud_processing.py`** – Load, visualize, and manipulate point clouds. Convert meshes to point clouds, sample points using Uniform and Poisson-disk sampling, visualize in 3D, and save outputs.
-
-- **`02_mesh_processing.py`** – Comprehensive mesh operations including loading, visualization, coloring, vertex normal computation, mesh subdivision, and simplification.
-
-- **`03_mesh_pcd_to_volume.py`** – Convert 3D meshes and point clouds to voxel grids (volumetric representations). Includes AABB/OBB computation, voxelization, point cloud to volume conversion, and binary volume visualization with erosion operations.
-
-- **`04_SDF.py`** – Advanced pipeline for Signed Distance Field (SDF) computation and mesh reconstruction. Computes SDFs from meshes, creates shell representations, applies morphological operations (erosion), and reconstructs meshes from SDF volumes. Uses a configurable pipeline with logging.
-
-- **`05_surface_reconstruction.py`** – Surface reconstruction pipeline demonstrating multiple algorithms: Convex Hull computation, Alpha Shapes with varying alpha values, Ball Pivoting Algorithm (BPA), and Poisson Surface Reconstruction with density-based filtering. Includes normal estimation and orientation techniques.
-
-- **`06_point_cloud_registration.py`** – Complete point cloud registration pipeline using RANSAC and ICP algorithms. Demonstrates mesh-to-point cloud conversion with uniform sampling, geometric transformations (rotation + translation), FPFH feature extraction, global registration with RANSAC, and local refinement with ICP. Includes comprehensive error analysis and transformation matrix recovery with yellow/cyan visualization.
-
-- **`07_deformable_registration.py`** – Deformable point cloud registration pipeline combining Gaussian process deformation with Coherent Point Drift (CPD) algorithm. Applies synthetic Gaussian deformation using random control points and kernel interpolation, then uses CPD to recover the deformation field. Includes comprehensive metrics (deformation magnitudes, registration error, field accuracy) and multi-stage visualization with blue/green/red color coding.
-
-### Helper Modules
-
-- **`functions.py`** – Utility functions for point cloud operations (NumPy array to Open3D PointCloud conversion) and binary volume visualization.
-
-- **`functions_for_sdf.py`** – Complete SDF pipeline utilities with:
-  - Mesh loading and normalization
-  - Voxel grid creation
-  - SDF computation (Open3D backend)
-  - Occupancy grid generation
-  - Binary morphological operations (erosion)
-  - Point cloud generation from SDF/occupancy
-  - Mesh reconstruction
-  - Visualization utilities
-  - `PipelineConfig` dataclass for configuration management
-
-- **`functions_for_surfaceR.py`** – Surface reconstruction utilities with:
-  - Point cloud loading (bunny, eagle datasets)
-  - Convex Hull computation
-  - Alpha Shape reconstruction with TetraMesh optimization
-  - Ball Pivoting Algorithm (BPA) reconstruction
-  - Poisson Surface Reconstruction with density visualization and filtering
-  - Normal estimation and consistent orientation
-
-- **`functions_for_registration.py`** – Point cloud registration utilities with:
-  - Bunny mesh loading from Open3D datasets
-  - Mesh-to-point cloud uniform sampling
-  - Geometric transformations (rotation + translation)
-  - FPFH feature computation for registration
-  - RANSAC global registration with feature matching
-  - ICP local refinement (point-to-point)
-  - Transformation error analysis (rotation, translation)
-  - Visualization utilities with custom point sizes
-  - `RegistrationConfig` dataclass for parameter management
-
-- **`functions_for_deformation.py`** – Deformable registration utilities with:
-  - Point cloud normalization and centering
-  - Gaussian kernel computation for deformation interpolation
-  - Gaussian process deformation with control points
-  - Comprehensive deformation metrics (magnitude, error, field difference)
-  - Colored point cloud creation and visualization
-  - `DeformationConfig` dataclass for pipeline configuration
-
-### Mathematical Demonstrations
-
-- **`mathDemo/convex_hull_2d_demo.py`** – Educational 2D convex hull computation using Graham Scan algorithm. Demonstrates:
-  - Anchor point selection (lowest y-coordinate)
-  - Polar angle sorting with `atan2`
-  - Cross product for turn detection (CCW/CW)
-  - Stack-based hull construction
-  - Step-by-step visualization with matplotlib
-  - Mathematical formulas and explanations
+</div>
 
 ---
 
-## Installation
+## 📚 Tutorial Series
+
+Complete step-by-step video tutorials with accompanying Python modules. Each tutorial builds upon previous concepts, creating a comprehensive learning path in 3D computer vision.
+
+| # | 📖 Tutorial Topic | 🐍 Python Module | 🎥 Video Tutorial |
+|---|-------------------|------------------|-------------------|
+| **Intro** | **Getting Started with 3D Vision** | - | [▶️ Watch](https://youtu.be/nEOeiYpRc0E?si=59lrWlMWuV5mUj0b) |
+| **01** | **Point Cloud Processing** | [`01_pointcloud_processing.py`](01_pointcloud_processing.py) | [▶️ Watch](https://youtu.be/D0TlEalWhVI?si=W4Ucj5QEnqMMYH8C) |
+| **02** | **Mesh Processing & Operations** | [`02_mesh_processing.py`](02_mesh_processing.py) | [▶️ Watch](https://youtu.be/7PPFEOXewZE?si=T0BCFb9mK3Fl9c5X) |
+| **03** | **Mesh & Point Cloud to Volume** | [`03_mesh_pcd_to_volume.py`](03_mesh_pcd_to_volume.py) | [▶️ Watch](https://youtu.be/3OZzJfNn9Ks?si=b77CE6196B0hdLmQ) |
+| **04** | **Signed Distance Fields (SDF)** | [`04_SDF.py`](04_SDF.py) | [▶️ Watch](https://youtu.be/Gxmd62wvMJA?si=OHZvCYavUkvSSxCP) |
+| **05** | **Surface Reconstruction** | [`05_surface_reconstruction.py`](05_surface_reconstruction.py) | [▶️ Watch](https://youtu.be/aaxzXQsILYs?si=9fpHTCEtwCgI1KjN) |
+| **06** | **Point Cloud Registration (RANSAC + ICP)** | [`06_point_cloud_registration.py`](06_point_cloud_registration.py) | [▶️ Watch](https://youtu.be/gv6VWirNH3I?si=tcDY0g4szkI3s87I) |
+| **07** | **Deformable Registration (CPD)** | [`07a_deformable_registration.py`](07a_deformable_registration.py) | [▶️ Watch](https://youtu.be/H5HCKN5Iph8?si=iSRxYQTG4Iolfmk4) |
+| **08** | **Point Cloud Segmentation (PointNet)** | [`08_point_cloud_segmentation.py`](08_point_cloud_segmentation.py) | 🎬 Coming Soon |
+
+---
+
+## 🎓 What You'll Learn
+
+### Tutorial 01: Point Cloud Processing
+- Load and visualize point clouds with Open3D
+- Convert meshes to point clouds
+- Uniform and Poisson-disk sampling techniques
+- 3D visualization and data export
+- **Helper Module:** [`functions.py`](functions.py)
+
+### Tutorial 02: Mesh Processing & Operations
+- Comprehensive mesh loading and manipulation
+- Vertex normal computation
+- Mesh coloring techniques
+- Mesh subdivision and simplification algorithms
+- Quality optimization strategies
+
+### Tutorial 03: Mesh & Point Cloud to Volume
+- Voxelization techniques
+- AABB/OBB bounding box computation
+- Point cloud to volume conversion
+- Binary volume visualization
+- Erosion operations on volumetric data
+
+### Tutorial 04: Signed Distance Fields (SDF)
+- Advanced SDF computation from meshes
+- Shell representation creation
+- Morphological operations (erosion)
+- Mesh reconstruction from SDF volumes
+- Configurable pipeline with logging
+- **Helper Module:** [`functions_for_sdf.py`](functions_for_sdf.py)
+
+### Tutorial 05: Surface Reconstruction
+- Convex Hull computation
+- Alpha Shapes with varying alpha values
+- Ball Pivoting Algorithm (BPA)
+- Poisson Surface Reconstruction
+- Normal estimation and orientation
+- Density-based filtering
+- **Helper Module:** [`functions_for_surfaceR.py`](functions_for_surfaceR.py)
+
+### Tutorial 06: Point Cloud Registration
+- RANSAC global registration
+- ICP local refinement
+- FPFH feature extraction
+- Transformation matrix recovery
+- Comprehensive error analysis
+- Yellow/cyan visualization for alignment
+- **Helper Module:** [`functions_for_registration.py`](functions_for_registration.py)
+
+### Tutorial 07: Deformable Registration
+- Gaussian process deformation
+- Coherent Point Drift (CPD) algorithm
+- Control points and kernel interpolation
+- Deformation field recovery
+- Comprehensive metrics and analysis
+- Multi-stage visualization
+- **Helper Module:** [`functions_for_deformation.py`](functions_for_deformation.py)
+
+### Tutorial 08: Point Cloud Segmentation ✨ NEW
+- PointNet model with OpenVINO
+- Deep learning for point cloud segmentation
+- Part segmentation (back, seat, legs, arms)
+- Color-coded visualization
+- PLY export with vertex colors
+- **Helper Module:** [`functions_for_segmentation.py`](functions_for_segmentation.py)
+
+---
+
+## 🚀 Quick Start
+
+### Installation
 
 ```bash
+# Clone the repository
 git clone https://github.com/1904jonathan/PardesLine.git
 cd PardesLine
+
+# Install dependencies
 pip install -r requirements.txt
 ```
 
 ### Requirements
 
-- `open3d` – 3D geometry processing
-- `numpy` – Numerical computing
-- `scipy` – Scientific computing (morphological operations)
-- `scikit-image` – Image processing utilities
-- `matplotlib` – Plotting and visualization
-- `loguru` – Enhanced logging
+```
+open3d       # 3D geometry processing
+numpy        # Numerical computing
+scipy        # Scientific computing
+scikit-image # Image processing
+matplotlib   # Plotting and visualization
+loguru       # Enhanced logging
+pycpd        # Coherent Point Drift
+openvino     # OpenVINO inference engine
+```
 
----
+### Running Tutorials
 
-## Usage
-
-Run any module to explore its workflow:
+Each module can be run independently:
 
 ```bash
 python 01_pointcloud_processing.py
@@ -106,77 +137,154 @@ python 03_mesh_pcd_to_volume.py
 python 04_SDF.py
 python 05_surface_reconstruction.py
 python 06_point_cloud_registration.py
-python 07_deformable_registration.py
-python mathDemo/convex_hull_2d_demo.py
+python 07a_deformable_registration.py
+python 08_point_cloud_segmentation.py
 ```
 
-**Output Directory:** Processed meshes and point clouds are saved in `C:\PardesLineData` by default.
+**📁 Output Directory:** All processed files are saved to `C:\PardesLineData` by default.
 
 ---
 
-## Workflow Overview
+## 🎯 Learning Path
 
-```
-Input: Mesh (e.g., Stanford Bunny)
-  ↓
-[01_pointcloud_processing] → Point Cloud operations
-  ↓
-[02_mesh_processing] → Mesh operations (color, subdivide, simplify)
-  ↓
-[03_mesh_pcd_to_volume] → Voxel Grid / Volume conversion
-  ↓
-[04_SDF] → SDF Computation & Mesh Reconstruction
-  ↓
-[05_surface_reconstruction] → Surface Reconstruction (Convex Hull, Alpha Shapes, BPA, Poisson)
-  ↓
-[06_point_cloud_registration] → RANSAC + ICP Registration & Alignment
-  ↓
-[07_deformable_registration] → Gaussian Deformation + CPD Registration
-  ↓
-Output: Processed models + visualizations
+```mermaid
+graph TD
+    A[📺 Introduction Video] --> B[01: Point Cloud Basics]
+    B --> C[02: Mesh Operations]
+    C --> D[03: Volumetric Conversion]
+    D --> E[04: SDF Computation]
+    E --> F[05: Surface Reconstruction]
+    F --> G[06: Registration RANSAC+ICP]
+    G --> H[07: Deformable Registration]
+    H --> I[08: Deep Learning Segmentation]
 
-Math Demonstrations:
-[mathDemo/convex_hull_2d_demo] → 2D Convex Hull (Graham Scan)
+    style A fill:#ff6b6b
+    style B fill:#4ecdc4
+    style C fill:#45b7d1
+    style D fill:#96ceb4
+    style E fill:#ffeaa7
+    style F fill:#dfe6e9
+    style G fill:#a29bfe
+    style H fill:#fd79a8
+    style I fill:#fdcb6e
 ```
 
 ---
 
-## Applications
+## 💡 Real-World Applications
 
-- 3D scanning & reconstruction
-- Robotics perception & SLAM (point cloud registration for localization)
-- Medical imaging & surgical navigation (registration of pre-op/intra-op scans)
-- Deformable medical image registration (organ deformation tracking)
-- VR/AR asset preparation and alignment
-- Machine learning on point clouds (PointNet, etc.)
-- Signed distance fields for neural implicit representations (NeRF, DeepSDF)
-- Surface reconstruction from point cloud scans
-- Multi-view 3D reconstruction (camera pose estimation with RANSAC)
-- Object tracking and 6DOF pose estimation
-- Non-rigid shape matching and deformation analysis
-- Educational demonstrations of computational geometry algorithms
+<table>
+<tr>
+<td width="50%">
+
+### 🤖 Robotics & Automation
+- SLAM and localization
+- Obstacle detection
+- Grasp planning
+- 3D scene understanding
+
+### 🏥 Medical Imaging
+- Surgical navigation
+- Organ deformation tracking
+- Pre-op/intra-op registration
+- Anatomical modeling
+
+</td>
+<td width="50%">
+
+### 🎮 VR/AR & Gaming
+- Asset preparation
+- Scene reconstruction
+- Real-time tracking
+- 6DOF pose estimation
+
+### 🧠 Machine Learning
+- PointNet/PointNet++ training
+- Neural implicit representations
+- DeepSDF applications
+- 3D object recognition
+
+</td>
+</tr>
+</table>
 
 ---
 
-## Key Features
+## ✨ Key Features
 
-✓ Full pipeline from mesh to volumetric representations
-✓ SDF computation and mesh reconstruction
-✓ Surface reconstruction (Convex Hull, Alpha Shapes, BPA, Poisson)
-✓ Rigid registration with RANSAC and ICP algorithms
-✓ Deformable registration with Gaussian deformation and CPD
-✓ FPFH feature-based matching for robust alignment
-✓ Gaussian kernel-based deformation interpolation
-✓ Geometric transformations (rotation, translation, scaling)
-✓ Voxelization with configurable resolution
-✓ Binary morphological operations (erosion)
-✓ Normal estimation and orientation
-✓ Interactive 3D visualization using Open3D
-✓ Comprehensive logging with Loguru
-✓ Modular, extensible design with dataclass configurations
-✓ Educational mathematical demonstrations (Graham Scan, cross products, polar angles)
+<table>
+<tr>
+<td>
 
+✅ **Full Pipeline Coverage**
+- Mesh to point cloud conversion
+- Volumetric representations
+- SDF computation & reconstruction
 
-## Author
+✅ **Advanced Algorithms**
+- RANSAC & ICP registration
+- CPD deformable registration
+- PointNet segmentation
 
-[1904jonathan](https://github.com/1904jonathan)
+</td>
+<td>
+
+✅ **Professional Tools**
+- Interactive 3D visualization
+- Comprehensive logging (Loguru)
+- Modular, extensible design
+
+✅ **Learning Resources**
+- Video tutorials for each module
+- Step-by-step documentation
+- Mathematical demonstrations
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🧮 Bonus: Mathematical Demonstrations
+
+Dive deeper into the mathematics behind 3D algorithms:
+
+- **[`mathDemo/convex_hull_2d_demo.py`](mathDemo/convex_hull_2d_demo.py)** – Graham Scan algorithm with step-by-step visualization
+  - Anchor point selection
+  - Polar angle sorting with `atan2`
+  - Cross product for turn detection
+  - Stack-based hull construction
+
+---
+
+## 📺 Subscribe for More
+
+<div align="center">
+
+[![Subscribe](https://img.shields.io/badge/Subscribe-PardesLine26-red?style=for-the-badge&logo=youtube)](https://www.youtube.com/@PardesLine26)
+
+**New tutorials released regularly! Click to subscribe and never miss an update.**
+
+</div>
+
+---
+
+## 👨‍💻 Author
+
+**Jonathan** – [GitHub Profile](https://github.com/1904jonathan)
+
+---
+
+## 📝 License
+
+This project is open source and available for educational purposes.
+
+---
+
+<div align="center">
+
+**⭐ If you find this helpful, please star the repository! ⭐**
+
+Made with ❤️ for the 3D Computer Vision community
+
+</div>
