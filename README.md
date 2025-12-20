@@ -28,7 +28,7 @@ Complete step-by-step video tutorials with accompanying Python modules. Each tut
 | **05** | **Surface Reconstruction** | [`05_surface_reconstruction.py`](05_surface_reconstruction.py) | [▶️ Watch](https://youtu.be/aaxzXQsILYs?si=9fpHTCEtwCgI1KjN) |
 | **06** | **Point Cloud Registration (RANSAC + ICP)** | [`06_point_cloud_registration.py`](06_point_cloud_registration.py) | [▶️ Watch](https://youtu.be/gv6VWirNH3I?si=tcDY0g4szkI3s87I) |
 | **07** | **Deformable Registration (CPD)** | [`07a_deformable_registration.py`](07a_deformable_registration.py) | [▶️ Watch](https://youtu.be/H5HCKN5Iph8?si=iSRxYQTG4Iolfmk4) |
-| **08** | **Point Cloud Segmentation (PointNet)** | [`08_point_cloud_segmentation.py`](08_point_cloud_segmentation.py) | 🎬 Coming Soon |
+| **08** | **Point Cloud Segmentation (PointNet)** | [`08_point_cloud_segmentation.py`](08_point_cloud_segmentation.py) | [▶️ Watch](https://youtu.be/WN-45UU8ZW4) |
 
 ---
 
