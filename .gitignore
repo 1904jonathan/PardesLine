@@ -2,3 +2,5 @@
 *.obj
 *.stl
 mathDemo
+.claude
+.vscode
