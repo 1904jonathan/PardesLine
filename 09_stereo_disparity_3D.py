@@ -1,18 +1,3 @@
-"""
-Stereo 3D Reconstruction Pipeline
-
-Professional-grade stereo vision module for 3D reconstruction from disparity maps.
-This module provides a complete pipeline for:
-- Camera calibration using chessboard patterns
-- Stereo image rectification and undistortion
-- Disparity map computation using block matching
-- 3D point cloud reconstruction
-- Visualization and export to PLY format
-
-Author: Computer Vision Expert
-Date: 2025-12-24
-"""
-
 from pathlib import Path
 from typing import Tuple, Optional
 from dataclasses import dataclass
@@ -465,73 +450,64 @@ class Visualizer:
 def main():
     """Main execution pipeline for stereo 3D reconstruction."""
 
-    try:
-        logger.info("╔" + "═" * 68 + "╗")
-        logger.info("║" + " " * 15 + "STEREO 3D RECONSTRUCTION PIPELINE" + " " * 20 + "║")
-        logger.info("╚" + "═" * 68 + "╝")
-        logger.info("")
+    logger.info("╔" + "═" * 68 + "╗")
+    logger.info("║" + " " * 15 + "STEREO 3D RECONSTRUCTION PIPELINE" + " " * 20 + "║")
+    logger.info("╚" + "═" * 68 + "╝")
+    logger.info("")
 
-        # Initialize configuration
-        config = StereoConfig()
+    # Initialize configuration
+    config = StereoConfig()
 
-        # Create output directory
-        config.output_dir.mkdir(parents=True, exist_ok=True)
-        logger.info(f"Output directory: {config.output_dir}")
-        logger.info("")
+    # Create output directory
+    config.output_dir.mkdir(parents=True, exist_ok=True)
+    logger.info(f"Output directory: {config.output_dir}")
+    logger.info("")
 
-        # Step 1: Camera Calibration
-        calibrator = CameraCalibrator(config)
-        K, dist, K_optimal = calibrator.calibrate()
-        logger.info("")
+    # Step 1: Camera Calibration
+    calibrator = CameraCalibrator(config)
+    K, dist, K_optimal = calibrator.calibrate()
+    logger.info("")
 
-        # Step 2: Stereo Reconstruction
-        reconstructor = StereoReconstructor(config, K, dist, K_optimal)
+    # Step 2: Stereo Reconstruction
+    reconstructor = StereoReconstructor(config, K, dist, K_optimal)
 
-        # Load and undistort images
-        imgL_undist, _, grayL, grayR = reconstructor.load_and_undistort()
-        logger.info("")
+    # Load and undistort images
+    imgL_undist, _, grayL, grayR = reconstructor.load_and_undistort()
+    logger.info("")
 
-        # Compute disparity map
-        disp8 = reconstructor.compute_disparity(grayL, grayR)
-        logger.info("")
+    # Compute disparity map
+    disp8 = reconstructor.compute_disparity(grayL, grayR)
+    logger.info("")
 
-        # Display disparity (optional)
-        if config.show_disparity:
-            Visualizer.show_disparity(disp8, imgL_undist)
+    # Display disparity (optional)
+    if config.show_disparity:
+        Visualizer.show_disparity(disp8, imgL_undist)
 
-        # Reconstruct 3D point cloud
-        pcd = reconstructor.reconstruct_3d(disp8, imgL_undist)
-        logger.info("")
+    # Reconstruct 3D point cloud
+    pcd = reconstructor.reconstruct_3d(disp8, imgL_undist)
+    logger.info("")
 
-        # Save point cloud
-        output_path = config.output_dir / config.output_filename
-        logger.info(f"Saving point cloud to: {output_path}")
-        success = o3d.io.write_point_cloud(str(output_path), pcd)
+    # Save point cloud
+    output_path = config.output_dir / config.output_filename
+    logger.info(f"Saving point cloud to: {output_path}")
+    success = o3d.io.write_point_cloud(str(output_path), pcd)
 
-        if success:
-            file_size_kb = output_path.stat().st_size / 1024
-            logger.info(f"Point cloud saved successfully ({file_size_kb:.2f} KB)")
-        else:
-            logger.error(f"Failed to save point cloud to {output_path}")
-        logger.info("")
+    if success:
+        file_size_kb = output_path.stat().st_size / 1024
+        logger.info(f"Point cloud saved successfully ({file_size_kb:.2f} KB)")
+    else:
+        logger.error(f"Failed to save point cloud to {output_path}")
+    logger.info("")
 
-        # Visualize point cloud (optional)
-        if config.show_point_cloud:
-            Visualizer.show_point_cloud(pcd)
+    # Visualize point cloud (optional)
+    if config.show_point_cloud:
+        Visualizer.show_point_cloud(pcd)
 
-        logger.info("=" * 70)
-        logger.info("PIPELINE COMPLETED SUCCESSFULLY")
-        logger.info("=" * 70)
+    logger.info("=" * 70)
+    logger.info("PIPELINE COMPLETED SUCCESSFULLY")
+    logger.info("=" * 70)
 
-    except FileNotFoundError as e:
-        logger.error(f"File not found: {e}")
-        sys.exit(1)
-    except ValueError as e:
-        logger.error(f"Value error: {e}")
-        sys.exit(1)
-    except Exception as e:
-        logger.exception(f"Unexpected error: {e}")
-        sys.exit(1)
+
 
 
 if __name__ == "__main__":
