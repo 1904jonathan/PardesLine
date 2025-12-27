@@ -29,6 +29,7 @@ Complete step-by-step video tutorials with accompanying Python modules. Each tut
 | **06** | **Point Cloud Registration (RANSAC + ICP)** | [`06_point_cloud_registration.py`](06_point_cloud_registration.py) | [▶️ Watch](https://youtu.be/gv6VWirNH3I?si=tcDY0g4szkI3s87I) |
 | **07** | **Deformable Registration (CPD)** | [`07a_deformable_registration.py`](07a_deformable_registration.py) | [▶️ Watch](https://youtu.be/H5HCKN5Iph8?si=iSRxYQTG4Iolfmk4) |
 | **08** | **Point Cloud Segmentation (PointNet)** | [`08_point_cloud_segmentation.py`](08_point_cloud_segmentation.py) | [▶️ Watch](https://youtu.be/WN-45UU8ZW4) |
+| **09** | **Stereo Vision 3D Reconstruction** | [`09_stereo_disparity_3D.py`](09_stereo_disparity_3D.py) | [▶️ Watch](https://youtu.be/0W7s22CxH34) |
 
 ---
 
@@ -90,13 +91,22 @@ Complete step-by-step video tutorials with accompanying Python modules. Each tut
 - Multi-stage visualization
 - **Helper Module:** [`functions_for_deformation.py`](functions_for_deformation.py)
 
-### Tutorial 08: Point Cloud Segmentation ✨ NEW
+### Tutorial 08: Point Cloud Segmentation
 - PointNet model with OpenVINO
 - Deep learning for point cloud segmentation
 - Part segmentation (back, seat, legs, arms)
 - Color-coded visualization
 - PLY export with vertex colors
 - **Helper Module:** [`functions_for_segmentation.py`](functions_for_segmentation.py)
+
+### Tutorial 09: Stereo Vision 3D Reconstruction ✨ NEW
+- Camera calibration using chessboard patterns
+- Lens distortion correction
+- Stereo disparity map computation (StereoBM)
+- Depth estimation from stereo pairs
+- 3D point cloud reconstruction from disparity
+- RGB texture mapping on point clouds
+- Real-world metric conversion (baseline calibration)
 
 ---
 
@@ -139,6 +149,7 @@ python 05_surface_reconstruction.py
 python 06_point_cloud_registration.py
 python 07a_deformable_registration.py
 python 08_point_cloud_segmentation.py
+python 09_stereo_disparity_3D.py
 ```
 
 **📁 Output Directory:** All processed files are saved to `C:\PardesLineData` by default.
@@ -156,7 +167,9 @@ Follow the tutorials in sequence for a complete learning experience:
     ↓
 04: SDF Computation → 05: Surface Reconstruction
     ↓
-06: Registration (RANSAC + ICP) → 07: Deformable Registration → 08: Deep Learning Segmentation
+06: Registration (RANSAC + ICP) → 07: Deformable Registration
+    ↓
+08: Deep Learning Segmentation → 09: Stereo Vision 3D Reconstruction
 ```
 
 ---
