@@ -30,6 +30,8 @@ Complete step-by-step video tutorials with accompanying Python modules. Each tut
 | **07** | **Deformable Registration (CPD)** | [`07a_deformable_registration.py`](07a_deformable_registration.py) | [▶️ Watch](https://youtu.be/H5HCKN5Iph8?si=iSRxYQTG4Iolfmk4) |
 | **08** | **Point Cloud Segmentation (PointNet)** | [`08_point_cloud_segmentation.py`](08_point_cloud_segmentation.py) | [▶️ Watch](https://youtu.be/WN-45UU8ZW4) |
 | **09** | **Stereo Vision 3D Reconstruction** | [`09_stereo_disparity_3D.py`](09_stereo_disparity_3D.py) | [▶️ Watch](https://youtu.be/0W7s22CxH34) |
+| **10** | **LiDAR Scene Visualization & Car Detection** | [`10_scene_Lidar_car_detection.py`](10_scene_Lidar_car_detection.py) | [▶️ Watch](https://youtu.be/TVfmClvXL6Q) |
+| **11** | **Real-Time LiDAR + Camera Fusion** | [`11_lidar_cam_aligned_viewer.py`](11_lidar_cam_aligned_viewer.py) | [▶️ Watch](https://youtu.be/TVfmClvXL6Q) |
 
 ---
 
@@ -99,7 +101,7 @@ Complete step-by-step video tutorials with accompanying Python modules. Each tut
 - PLY export with vertex colors
 - **Helper Module:** [`functions_for_segmentation.py`](functions_for_segmentation.py)
 
-### Tutorial 09: Stereo Vision 3D Reconstruction ✨ NEW
+### Tutorial 09: Stereo Vision 3D Reconstruction
 - Camera calibration using chessboard patterns
 - Lens distortion correction
 - Stereo disparity map computation (StereoBM)
@@ -107,6 +109,26 @@ Complete step-by-step video tutorials with accompanying Python modules. Each tut
 - 3D point cloud reconstruction from disparity
 - RGB texture mapping on point clouds
 - Real-world metric conversion (baseline calibration)
+
+### Tutorial 10: LiDAR Scene Visualization & Car Detection ✨ NEW
+- nuScenes dataset integration (v1.0-mini)
+- LiDAR point cloud loading and processing
+- 3D bounding box visualization
+- Vehicle detection from LiDAR data
+- Height-based point cloud coloring
+- Interactive 3D scene navigation
+- Multi-scene iteration and exploration
+- Open3D OrientedBoundingBox for car detection
+
+### Tutorial 11: Real-Time LiDAR + Camera Fusion ✨ NEW
+- Sensor fusion: LiDAR and camera synchronization
+- 3D to 2D projection of bounding boxes
+- Camera intrinsic calibration usage
+- Real-time temporal visualization
+- Dual-view display (3D LiDAR + 2D Camera)
+- Frame-by-frame animation with FPS control
+- Alignment verification between sensors
+- nuScenes geometry utilities integration
 
 ---
 
@@ -126,14 +148,16 @@ pip install -r requirements.txt
 ### Requirements
 
 ```
-open3d       # 3D geometry processing
-numpy        # Numerical computing
-scipy        # Scientific computing
-scikit-image # Image processing
-matplotlib   # Plotting and visualization
-loguru       # Enhanced logging
-pycpd        # Coherent Point Drift
-openvino     # OpenVINO inference engine
+open3d            # 3D geometry processing
+numpy             # Numerical computing
+scipy             # Scientific computing
+scikit-image      # Image processing
+matplotlib        # Plotting and visualization
+loguru            # Enhanced logging
+pycpd             # Coherent Point Drift
+openvino          # OpenVINO inference engine
+nuscenes-devkit   # nuScenes dataset tools (Tutorials 10-11)
+pillow            # Image processing (Tutorial 11)
 ```
 
 ### Running Tutorials
@@ -150,6 +174,8 @@ python 06_point_cloud_registration.py
 python 07a_deformable_registration.py
 python 08_point_cloud_segmentation.py
 python 09_stereo_disparity_3D.py
+python 10_scene_Lidar_car_detection.py
+python 11_lidar_cam_aligned_viewer.py
 ```
 
 **📁 Output Directory:** All processed files are saved to `C:\PardesLineData` by default.
@@ -170,6 +196,8 @@ Follow the tutorials in sequence for a complete learning experience:
 06: Registration (RANSAC + ICP) → 07: Deformable Registration
     ↓
 08: Deep Learning Segmentation → 09: Stereo Vision 3D Reconstruction
+    ↓
+10: LiDAR Scene Visualization → 11: Real-Time LiDAR + Camera Fusion
 ```
 
 ---
@@ -185,6 +213,12 @@ Follow the tutorials in sequence for a complete learning experience:
 - Obstacle detection
 - Grasp planning
 - 3D scene understanding
+
+### 🚗 Autonomous Driving
+- LiDAR-based vehicle detection
+- Sensor fusion (LiDAR + Camera)
+- Real-time 3D object tracking
+- Scene understanding for self-driving
 
 ### 🏥 Medical Imaging
 - Surgical navigation
