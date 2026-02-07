@@ -32,6 +32,7 @@ Complete step-by-step video tutorials with accompanying Python modules. Each tut
 | **09** | **Stereo Vision 3D Reconstruction** | [`09_stereo_disparity_3D.py`](09_stereo_disparity_3D.py) | [▶️ Watch](https://youtu.be/0W7s22CxH34) |
 | **10** | **LiDAR Scene Visualization & Car Detection** | [`10_scene_Lidar_car_detection.py`](10_scene_Lidar_car_detection.py) | [▶️ Watch](https://youtu.be/TVfmClvXL6Q) |
 | **11** | **Real-Time LiDAR + Camera Fusion** | [`11_lidar_cam_aligned_viewer.py`](11_lidar_cam_aligned_viewer.py) | [▶️ Watch](https://youtu.be/TVfmClvXL6Q) |
+| **12** | **Collision Measurement Using Signed Distance Field (SDF)** | [`12_collision_measure_SDF.py`](12_collision_measure_SDF.py) | [▶️ Watch](https://youtu.be/iaAG6ACiNcY) |
 
 ---
 
@@ -129,6 +130,17 @@ Complete step-by-step video tutorials with accompanying Python modules. Each tut
 - Frame-by-frame animation with FPS control
 - Alignment verification between sensors
 - nuScenes geometry utilities integration
+
+### Tutorial 12: 3D Collision Detection & SDF-based Contact Analysis ✨ NEW
+- Mesh-based collision detection using VTK / PyVista
+- Signed Distance Field (SDF) collision computation with Open3D
+- Accurate penetration depth estimation
+- Extraction of collision contact regions
+- Axis-Aligned Bounding Box (AABB) of contact patches
+- Comparison between mesh-based and SDF-based collision metrics
+- Practical discussion: discretization vs continuous geometry
+- Foundations for physics simulation, robotics contact modeling, and ML losses
+- **Helper Module:** `functions_for_sdf.py`
 
 ---
 
